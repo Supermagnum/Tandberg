@@ -27,6 +27,8 @@ The biggest challenge is that, broadly speaking, the keyboard only sends charact
 PDF files with characters, electric schemas:
 https://github.com/Supermagnum/Tandberg/tree/main/pdf-files
 
+ROM's:
+https://github.com/Supermagnum/Tandberg/tree/main/TDV-2200%20ROM-files
 
 text:
 https://github.com/Supermagnum/Tandberg/blob/main/site.txt
