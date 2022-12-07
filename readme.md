@@ -1,3 +1,6 @@
+Source site:
+https://sites.google.com/site/tingox/tdv2200
+
 From the site:
 8035 info: port 1 is P10 - P17 (pin 27 - 34), port 2 is P20 - P23 (pin pin 21 - 24) and P24 - P27 (pin 35 - 38), bus is DB0 - DB7 (pin 12 - 19), test inputs T0 (pin 1) and T1 (pin 39), interrupt line INT (pin 6)
 location 0 - reset (start) address
@@ -78,6 +81,18 @@ Note: all these are as seen from the keyboard, TRANS is to the terminal, REC is 
 2013-03-27: looking at the schematic for the TDV 2200 keyboard, a few key things:
 receive (serial input to the keyboard) is connected via a 26LS32 to the T0 pin (pin 1) on the 8035.
 send (serial output from the keyboard) is from the P15 pin (pin 32) on the 8035, via a 26LS31.
+
+ the keyboard uses V.11 / RS-422 to at 2400 baud communicate with the terminal. The external keyboard connector (E1) is a 9 pin connector. Pinout is
+1 - protective ground CHGND
+2 - transmit to keyb. TXKB (bar)
+3 - +5V
+4 - receive from keyb.RXKB (bar)
+5 -
+6 - GND
+7 - transmit to keyboard TXKB
+8 -
+9 - receive from keyboard RXKB
+The keyboard uses a 26LS31 line driver (U10) and a 26LS32 line receiver (U9) which converts TTL to RS-422 signals. The mainboard uses the same circuits.
 
 2013-03-27: description how the keyboard works (from the schematic notes): Clocked by a 5.76 MHz crystal oscillator the microprocessor continuously generates a cyclic 4-bit address for the scan decoder which scans the 16 vertical lines of the key matrix and pulls one line at a time low. At the same time the microprocessor reads the status of the eight horizontal matrix lines.
 
