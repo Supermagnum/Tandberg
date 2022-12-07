@@ -14,6 +14,9 @@ What's available of commands varies slightly based on what firmware is in.
 
 The biggest challenge is that, broadly speaking, the keyboard only sends characters when a button is pressed. Fine for typing, but not very much when one needs to press certain button combinations in Windows or Linux for example.
 
+PDF files with characters, electric schemas:
+https://github.com/Supermagnum/Tandberg/tree/main/pdf-files
+
 
 text:
 https://github.com/Supermagnum/Tandberg/blob/main/site.txt
