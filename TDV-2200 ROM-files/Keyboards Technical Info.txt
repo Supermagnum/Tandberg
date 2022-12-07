@@ -1,0 +1,78 @@
+
+Communication:
+
+	UART over RS-422
+	8-bits per byte, no parity
+	2400 baud Tx, 600 baud Rx
+
+///////////////////////////////////////////////////////////////
+
+Keyboard keynames:
+
+	+----------------------------------------------------------------------------------------------------+
+	|                                                                                                    |
+	|                                                                                                    |
+	|                                                                                                    |
+	|  G0  G1  G2  G3  G4  G5  G6  G7  G8  G9  G10 G11 G12 G13 G14      G47 G48 G49 G50 G51 G52 G53 G54  |
+	|                                                                   F47 F48 F49 F50 F51 F52 F53 F54  |
+	|    E0  E1  E2  E3  E4  E5  E6  E7  E8  E9  E10 E11 E12 E13 E14    E47 E48 E49 E50 E51 E52 E53 E54  |
+	|  D99 D0  D1  D2  D3  D4  D5  D6  D7  D8  D9  D10 D11 D12 D13      D47 D48 D49 D50 D51 D52 D53 D54  |
+	|  C99  C0  C1  C2  C3  C4  C5  C6  C7  C8  C9  C10 C11 C12 C13     C47 C48 C49 C50 C51 C52 C53 C54  |
+	|    B99   B0  B1  B2  B3  B4  B5  B6  B7  B8  B9  B10 B11          B47 B48 B49 B50 B51 B52 B53 B54  |
+	|                                A5                                 A47 A48 A49 A50 A51     A53      |
+	|                                                                                                    |
+	+----------------------------------------------------------------------------------------------------+
+
+Keynames in key datatable:
+
+	Offset:
+	00-0F	  x   x   x A50 A49 A48 A47 C49 D48 E48 B49 G50   x   x E50 C50
+	10-1F	C54 B53 C53 B52 B51 B50 C51 D54 D51 E52 C52 E53 E54 D52 E51 D53
+	20-2F	F50 F49 F53 F52 F51 F54 G54 G53 D49 F48 G52 G48 F47 E49 G49 G51
+	30-3F	 B0  B1  B2  B3  B4  B5  B6  B7  B8  B9 B10 A51  A5 B48 B47 C13
+	40-4F	 C1  C2  C3  C4  C5  C6  C7  C8  C9 C10 C11 B54 C48 C47 C99 C12
+	50-5F	 D1  D2  D3  D4  D5  D6  D7  D8  D9 D10 D11 D50 D47 D99 D13 D12
+	60-6F	 E1  E2  E3  E4  E5  E6  E7  E8  E9 E10 E11 A53 E47 E14 E13 E12
+	70-7F	 G0  G1  G2  G3  G4  G5  G6  G7  G8  G9 G10 G47 G14 G13 G12 G11
+
+Key datatables in layout definition:
+
+	Offset:
+	000-07F		Key flags
+	080-0FF		Normal Key-values
+	100-17F		Shift held Key-values
+	180-1FF		Ctrl held Key-values
+
+///////////////////////////////////////////////////////////////
+
+	Commands sent to Keyboard
+
+///////////////////////////////////////////////////////////////
+
+	00	Do nothing
+	01-08	Turn LED 1-8 on
+	09-10	Turn LED 1-8 off
+	11-18	Turn LED 1-8 on in RAM bitmap only
+	19-1F	Do nothing
+	20-2F	Excecute operation 1-16
+	30	Set bit 2 of P2 (2200S models only)
+	31-FF	Do nothing
+
+Operations:
+
+	1	Do Nothing
+	2	Enable Click
+	3	Disable Click
+	4	Turn on CAPS
+	5	Trigger Beeper
+	6	Turn off LED 1 to 8
+	7	Turn off LED 1 to 4
+	8	Check Keyboard Expansion busy state (DATA line. returns EF if 0, F5 if 1)
+	9	Enable Key-Repeat
+	10	Disable Key-Repeat
+	11	Read Locks
+	12	Disable READY to expansion
+	13	Enable READY to expansion
+	14	ROM Check (AA = ok, else fail)
+	15	RAM Check (AA = ok, EE = fail)
+	16	Read Selected Layout ID number (6 chars)

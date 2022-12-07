@@ -1,0 +1,24 @@
+IO:
+
+00__ - 0F__	0000__xx________ -> Z80-SIO Serial IO
+1__0 - 1__7	0001________0__x -> MC6850 Serial IO Keyboard (RS-422)
+1__8 - 1__F	0001________1__x -> MC6850 Serial IO Printer (RS-422)
+2__0 - 2__F	0010__________xx -> 8253 Timer
+3__0 - 3__F	0011________xxxx -> TMS9937/CRT5027 Display Controller
+4000 - 4FFF	0100____________ -> DMA*
+5000 - 5FFF	0101____________ -> Control Port 1
+6000 - 6FFF	0110____________ -> Status/Control Port 2
+7000 - 7FFF	0111____________ -> Character Attribute** ***
+8000 - FFFF	1_______________ -> Expansion cards
+
+*  Controller must be provided on an Expansion-card.
+** To set attribute to be used for new characters, set ATWR bit in control register and write to attribute register.
+*** To get attribute from video RAM, do a regular memory read of the character and then read attribute register.
+
+Memory Map:
+
+0000-3FFF: ROM
+4000-57FF: ROM or RAM
+5800-5FFF: RAM
+6000-7FFF: Display Character RAM/Non-volatile memory
+8000-FFFF: Expansion Cards

@@ -1,0 +1,64 @@
+
+
+	Type of PROM used in TDV-2200 terminals:
+
+
+	U27	Address Decode			256x4		1M15823/82S129
+
+		A0-4:	A11-15
+		A5-6:	Control Port 1 bit 0-1
+		A7:	/Interrupt-Disabled signal
+		D0-2:	000 - U31/U93
+			001 - U32
+			010 - U33
+			011 - U34
+			100 - U35
+			101 - U38
+			110 - Display Memory
+			111 - None
+		D3:	  0 - Read from external bus
+			  1 - Read from internal bus
+
+
+
+	U55	Attribute Lookup Table		512x4		1M15824/82S131
+
+		
+
+	U67	Display Address Translation	256x8		74S471
+
+		A0-2:	Character bit 4-6
+		A3-7:	Row bit 0-4
+		D0-6:	Display Memory A4-10
+		D7:	None
+
+
+
+1M1582x:
+
+		  .-._.-.
+	A6	--|o	|--	VCC
+	A5	--|	|--	A7
+	A4	--|	|--	/OE2	(A8  for 1M15824)
+	A3	--|	|--	/OE1	(/OE for 1M15824)
+	A0	--|	|--	D0
+	A1	--|	|--	D1
+	A2	--|	|--	D2
+	GND	--|	|--	D3
+		  `-----´ 
+
+
+74S471:
+
+		  .-._.-.
+	A0	--|o	|--	VCC
+	A1	--|	|--	A7
+	A2	--|	|--	A6
+	A3	--|	|--	A5
+	A4	--|	|--	/OE2
+	D0	--|	|--	/OE1
+	D1	--|	|--	D7
+	D2	--|	|--	D6
+	D3	--|	|--	D5
+	GND	--|	|--	D4
+		  `-----´ 
