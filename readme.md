@@ -27,7 +27,10 @@ Source site:
 https://sites.google.com/site/tingox/tdv2200
 
 
-
+Adapter, it is for TDV2215 keyboard.
+It might work for the 2200.
+It should be possible to hack it to use a usb port.
+https://github.com/Frodevan/Tandberg-Adapter
 
 
 
