@@ -1,3 +1,6 @@
+It was used for:
+https://en.wikipedia.org/wiki/TDV_2200
+
 Tech details that I have been told: 
 The keyboard runs standard UART over RS-485, 2400 baud from the keyboard and 600 baud to the keyboard. This is worth noting, as one does not always expect the speed of Rx and Tx to be different. Bytes sent from the keyboard are mostly pure ASCII codes when regular buttons are pressed.
 
