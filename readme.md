@@ -4,10 +4,15 @@ https://en.wikipedia.org/wiki/TDV_2200
 The keycaps looks like Devlin Z series.
 https://www.devlin.co.uk/products/components/keycaps.html
 
-They actually are Siemens STB 11.
+They actually are Siemens STB 11/21.
 What the switches might be is described here:
 
-https://telcontar.net/KBK/Siemens/STB_11
+Early models:
+https://deskthority.net/wiki/Siemens_STB_11
+
+Later:
+https://deskthority.net/wiki/Siemens_STB_21
+
 
 
 Tech details that I have been told: 
