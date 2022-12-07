@@ -15,9 +15,13 @@ What's available of commands varies slightly based on what firmware is in.
 The biggest challenge is that, broadly speaking, the keyboard only sends characters when a button is pressed. Fine for typing, but not very much when one needs to press certain button combinations in Windows or Linux for example.
 
 
+text:
+https://github.com/Supermagnum/Tandberg/blob/main/site.txt
 
 Source site:
 https://sites.google.com/site/tingox/tdv2200
+
+
 
 
 
