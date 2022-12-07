@@ -197,3 +197,11 @@ Cool.
 The keyboard uses a 26LS31 line driver (U10) and a 26LS32 line receiver (U9) which converts TTL to RS-422 signals. The terminal mainboard uses the same circuits.
 
 2011-04-02: Today I tested the spare ND 320 keyboard on the ND 320 terminal. (just a quick test), and it is working. Even the caps lock key (without the key cap) is working. I also tested the ND 246 keyboard (connected it to the ND 320 terminal) and it is working.
+
+
+------------------
+
+Same manufacturer, but somewhat different model. 
+Site in German: http://www.werners-seiten.de/doku_hw.html
+
+
