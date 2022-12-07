@@ -7,7 +7,8 @@ https://www.devlin.co.uk/products/components/keycaps.html
 They actually are Siemens STB 11.
 What the switches might be is described here:
 
-https://telcontar.net/KBK/Sasse/Series_25
+https://telcontar.net/KBK/Siemens/STB_11
+
 
 Tech details that I have been told: 
 The keyboard runs standard UART over RS-485, 2400 baud from the keyboard and 600 baud to the keyboard. This is worth noting, as one does not always expect the speed of Rx and Tx to be different. Bytes sent from the keyboard are mostly pure ASCII codes when regular buttons are pressed.
