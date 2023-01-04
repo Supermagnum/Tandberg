@@ -1,11 +1,6 @@
 
 
-A Quote from Frode van der Meeren:
-Tandberg made these keyboards in the late 80s specifically for PC ports of Norsk-Data software (especially the NOTIS word processor). This was ten years before it was common to have a lot of extra buttons on the keyboard, so Tandberg naturally created his own system for these buttons. This system doesn't understand keyboard controllers on modern PCs (and certainly not drivers on modern operating systems), so the extra 20 buttons here are usually useless without a fix. The patch fixes this, and makes all the extra buttons output valid codes for "extra buttons" that have become standard in recent times.
-The patch must be written to an 8051-compatible chip, but otherwise it is just a matter of replacing the controller that is in it with this one. I haven't tested it completely yet, but it should work (just changed some data tables and made sure the checksum goes up).
 
-You can find the file here: https://inhale.ed.ntnu.no/tdv_5000_patch.zip or https://github.com/Supermagnum/Tandberg/blob/main/tdv_5000_patch.zip
-You need an 8051 burner and an unprogrammed chip, but quite a few EPROM programmers handle this just fine.
 
 
 It was used for:
@@ -51,6 +46,15 @@ Adapter, it is for TDV2215 keyboard.
 It might work for the 2200.
 It should be possible to hack it to use a usb port.
 https://github.com/Frodevan/Tandberg-Adapter
+
+A Quote from Frode van der Meeren:
+Tandberg made these keyboards in the late 80s specifically for PC ports of Norsk-Data software (especially the NOTIS word processor). This was ten years before it was common to have a lot of extra buttons on the keyboard, so Tandberg naturally created his own system for these buttons. This system doesn't understand keyboard controllers on modern PCs (and certainly not drivers on modern operating systems), so the extra 20 buttons here are usually useless without a fix. The patch fixes this, and makes all the extra buttons output valid codes for "extra buttons" that have become standard in recent times.
+The patch must be written to an 8051-compatible chip, but otherwise it is just a matter of replacing the controller that is in it with this one. I haven't tested it completely yet, but it should work (just changed some data tables and made sure the checksum goes up).
+
+You can find the file here: https://inhale.ed.ntnu.no/tdv_5000_patch.zip or https://github.com/Supermagnum/Tandberg/blob/main/tdv_5000_patch.zip
+You need an 8051 burner and an unprogrammed chip, but quite a few EPROM programmers handle this just fine.
+
+-----------------
 
 
 
