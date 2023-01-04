@@ -1,6 +1,6 @@
 
 
-
+A repository for Tandberg Data Keyboards technical information an ROM's.
 
 
 It was used for:
