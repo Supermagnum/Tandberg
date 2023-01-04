@@ -54,6 +54,8 @@ The patch must be written to an 8051-compatible chip, but otherwise it is just a
 You can find the file here: https://inhale.ed.ntnu.no/tdv_5000_patch.zip or https://github.com/Supermagnum/Tandberg/blob/main/tdv_5000_patch.zip
 You need an 8051 burner and an unprogrammed chip, but quite a few EPROM programmers handle this just fine.
 
+Will only work with Tandberg-produced keyboards using Siemens-style switches (will NOT work with the later Cherry-OEM boards).
+
 -----------------
 
 
