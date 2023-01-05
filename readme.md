@@ -56,6 +56,9 @@ You need an 8051 burner and an unprogrammed chip, but quite a few EPROM programm
 
 Will only work with Tandberg-produced keyboards using Siemens-style switches (will NOT work with the later Cherry-OEM boards).
 
+Relevant link:
+https://deskthority.net/viewtopic.php?p=510471&fbclid=IwAR0zaQu8uTHwMTm-UsuSfG81ov3WB_CojSnIdtL4lQ4mgjvReQ_DE7Y5ofQ#p510471
+
 -----------------
 
 
