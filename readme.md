@@ -51,7 +51,7 @@ A Quote from Frode van der Meeren:
 Tandberg made these keyboards in the late 80s specifically for PC ports of Norsk-Data software (especially the NOTIS word processor). This was ten years before it was common to have a lot of extra buttons on the keyboard, so Tandberg naturally created his own system for these buttons. This system doesn't understand keyboard controllers on modern PCs (and certainly not drivers on modern operating systems), so the extra 20 buttons here are usually useless without a fix. The patch fixes this, and makes all the extra buttons output valid codes for "extra buttons" that have become standard in recent times.
 The patch must be written to an 8051-compatible chip, but otherwise it is just a matter of replacing the controller that is in it with this one.
 
-You can find the file here: https://inhale.ed.ntnu.no/tdv_5000_patch.zip or https://github.com/Supermagnum/Tandberg/blob/main/tdv_5000_patch.zip
+You can find the file here:https://github.com/Supermagnum/Tandberg/tree/main/patch 
 You need an 8051 burner and an unprogrammed chip, but quite a few EPROM programmers handle this just fine.
 
 Will only work with Tandberg-produced keyboards using Siemens-style switches (will NOT work with the later Cherry-OEM boards).
