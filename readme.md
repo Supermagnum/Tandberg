@@ -10,7 +10,7 @@ The keycaps looks like Devlin Z series.
 https://www.devlin.co.uk/products/components/keycaps.html
 
 They actually are Siemens STB 11/21.
-What the switches might be is described here:
+The swtitches are described here:
 
 Early models:
 https://deskthority.net/wiki/Siemens_STB_11
@@ -43,23 +43,27 @@ https://sites.google.com/site/tingox/tdv2200
 
 
 Adapter, it is for TDV2215 keyboard.
-It might work for the 2200.
+It also works for the 2200.
 It should be possible to hack it to use a usb port.
 https://github.com/Frodevan/Tandberg-Adapter
+
+-----------------
+
+TDV-5000 Series
 
 A Quote from Frode van der Meeren:
 Tandberg made these keyboards in the late 80s specifically for PC ports of Norsk-Data software (especially the NOTIS word processor). This was ten years before it was common to have a lot of extra buttons on the keyboard, so Tandberg naturally created his own system for these buttons. This system doesn't understand keyboard controllers on modern PCs (and certainly not drivers on modern operating systems), so the extra 20 buttons here are usually useless without a fix. The patch fixes this, and makes all the extra buttons output valid codes for "extra buttons" that have become standard in recent times.
 The patch must be written to an 8051-compatible chip, but otherwise it is just a matter of replacing the controller that is in it with this one.
 
-You can find the file here:https://github.com/Supermagnum/Tandberg/tree/main/patch 
+You can find the file here: https://github.com/Supermagnum/Tandberg/tree/TDV-5000/tdv_5000_patch.zip
 You need an 8051 burner and an unprogrammed chip, but quite a few EPROM programmers handle this just fine.
 
 Will only work with Tandberg-produced keyboards using Siemens-style switches (will NOT work with the later Cherry-OEM boards).
 
 Relevant links:
-https://deskthority.net/viewtopic.php?p=510471&fbclid=IwAR0zaQu8uTHwMTm-UsuSfG81ov3WB_CojSnIdtL4lQ4mgjvReQ_DE7Y5ofQ#p510471
+https://deskthority.net/viewtopic.php?p=510471
 
-https://deskthority.net/wiki/Tandberg_Data_TDV_5000_Series?fbclid=IwAR3bMSwRfTZwI8S27SGQI0mdmtan-TrTIKXrdYDUErMPf6f05DzqLcbVtjs
+https://deskthority.net/wiki/Tandberg_Data_TDV_5000_Series
 
 
 
