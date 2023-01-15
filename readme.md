@@ -61,5 +61,11 @@ https://deskthority.net/wiki/Tandberg_Data_TDV_5000_Series
 
 -----------------
 
+A attempt at creating a new controller board for TDV 2200 series,- It has two Rasperry picos, uses I2C communication. The reason for two MCU's are because one alone does not have enough pins.
+https://github.com/Supermagnum/Tandberg/tree/main/tandberg-2200-USB
 
+Suggested firmware that has to be written:
+https://qmk.fm/
+
+https://get.vial.today/
 
