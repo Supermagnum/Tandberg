@@ -1,0 +1,84 @@
+
+(rules PCB tandberg-5000
+  (snap_angle 
+    fortyfive_degree
+  )
+  (autoroute_settings
+    (fanout off)
+    (autoroute on)
+    (postroute on)
+    (vias on)
+    (via_costs 50)
+    (plane_via_costs 5)
+    (start_ripup_costs 100)
+    (start_pass_no 6)
+    (layer_rule F.Cu
+      (active on)
+      (preferred_direction horizontal)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 6.0)
+    )
+    (layer_rule B.Cu
+      (active on)
+      (preferred_direction vertical)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 1.2)
+    )
+  )
+  (rule
+    (width 1000.0)
+    (clear 200.0)
+    (clear 500.0 (type smd_to_turn_gap))
+  )
+  (padstack "Via[0-1]_800:400_um"
+    (shape
+      (circle F.Cu 800.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 800.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (via 
+    "Via[0-1]_800:400_um" "Via[0-1]_800:400_um" default
+  )
+  (via 
+    "Via[0-1]_800:400_um-kicad_default" "Via[0-1]_800:400_um" "kicad_default"
+  )
+  (via_rule
+    default "Via[0-1]_800:400_um"
+  )
+  (via_rule
+    "kicad_default" "Via[0-1]_800:400_um-kicad_default"
+  )
+  (class default
+    GNDL "Net-(J1-Pad2)" "Net-(J1-Pad3)" "unconnected-(J1-Pad4)" "unconnected-(J1-Pad5)" COL1 COL2 COL3
+    COL4 COL5 COL6 COL7 COL8 "Net-(J1-Pad14)" "unconnected-(J1-Pad16)" ROW1
+    ROW2 ROW3 ROW4 ROW5 ROW6 ROW7 ROW8 ROW9
+    ROW10 ROW11 ROW12 ROW13 ROW14 ROW15 ROW16 LED1
+    LED2 LED3 "SDA I2C0" "SCL I2C0" "unconnected-(U1-Pad26)" "unconnected-(U1-Pad29)" "Net-(SW1-Pad1)" "unconnected-(U1-Pad31)"
+    "unconnected-(U1-Pad32)" "unconnected-(U1-Pad34)" "unconnected-(U1-Pad35)" "unconnected-(U1-Pad36)" "unconnected-(U1-Pad37)" "unconnected-(U1-Pad39)" VCCL "unconnected-(U1-Pad41)"
+    "unconnected-(U1-Pad43)" sdaR sclR "unconnected-(U2-Pad14)" "unconnected-(U2-Pad15)" "unconnected-(U2-Pad16)" "unconnected-(U2-Pad17)" "unconnected-(U2-Pad19)"
+    "unconnected-(U2-Pad20)" "unconnected-(U2-Pad21)" "unconnected-(U2-Pad22)" "unconnected-(U2-Pad24)" "unconnected-(U2-Pad25)" "unconnected-(U2-Pad26)" "unconnected-(U2-Pad27)" "unconnected-(U2-Pad29)"
+    "Net-(SW2-Pad1)" "unconnected-(U2-Pad31)" "unconnected-(U2-Pad32)" "unconnected-(U2-Pad34)" "unconnected-(U2-Pad35)" "unconnected-(U2-Pad36)" "unconnected-(U2-Pad37)" "unconnected-(U2-Pad39)"
+    "unconnected-(U2-Pad41)" "unconnected-(U2-Pad43)"
+    (clearance_class default)
+    (via_rule default)
+    (rule
+      (width 1000.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class "kicad_default"
+    (clearance_class "kicad_default")
+    (via_rule "kicad_default")
+    (rule
+      (width 1000.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+)
