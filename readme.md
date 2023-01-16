@@ -88,7 +88,8 @@ https://connectorbook.com/identification.html?m=NNK&n=ffc_fpc_lif_sockets&fl=000
 * [TE](https://www.te.com/usa-en/products/connectors/pcb-connectors/wire-to-board-connectors/ffc-fpc-ribbon-connectors/fpc-connectors.html?tab=pgp-story) - 84533 - [digikey](https://www.digikey.ee/short/54bfrwrh)
 * [TE](https://www.te.com/usa-en/products/connectors/pcb-connectors/wire-to-board-connectors/ffc-fpc-ribbon-connectors/fpc-connectors.html?tab=pgp-story) - 84534 - [digikey](https://www.digikey.ee/short/54bfrwrh)
 
-Drop in PCB attempt, with modern controller and USB 
+Drop in PCB attempt, with modern controller and USB.
+I hope that the footprints are OK.
 https://github.com/Supermagnum/Tandberg/tree/main/Tandberg-USB
 
 Suggested firmware that has to be written:
