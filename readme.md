@@ -60,9 +60,33 @@ https://deskthority.net/wiki/Tandberg_Data_TDV_5000_Series
 
 
 -----------------
+Controller Pcb measures: Generally:
 
-A attempt at creating a new controller board for TDV 2200 series,- It has two Rasperry picos, uses I2C communication. The reason for two MCU's are because one alone does not have enough pins.
-https://github.com/Supermagnum/Tandberg/tree/main/tandberg-2200-USB
+* 51mm depth on the entire circuit board
+* The width is not as critical, there is room for close to 400mm inside the rail in which it is mounted.
+
+From the left edge of the circuit board, same side as the PS/2 connector:
+
+* 11mm towards the right to the center of the PS/2 connector
+* 57mm towards the right to the center of the first pin on the first flat cable
+* 162mm towards the right to the center of the first pin on the second flat cable
+
+Else
+* 7mm downwards from the upper long side to the first pin on the flat cable
+* 19mm length between the first and last pin on each flat cable (16 conductors, so approx. 1.24mm pitch).
+
+Connectors:
+LIF (Low Insertion Force) FFC socket. The pitch is 1.25mm
+
+https://connectorbook.com/identification.html?m=NNK&n=ffc_fpc_lif_sockets&fl=000000000000-f-||1.25
+
+* MANUF. - SERIES
+* Adam Tech - PCB 1.25mm
+* [JST](https://www.jst.com/products/ffc-fpc-connectors/fe-connector/) - [FE](https://www.jst.com/wp-content/uploads/2021/03/eFE.pdf) (pdf) - [digikey](https://www.digikey.ee/short/qz85mbb3)
+* Molex - 52044 - [digikey](https://www.digikey.ee/short/bcqq5vn9)
+* Molex - 52045 - [digikey](https://www.digikey.ee/short/rfdtp9t1)
+* [TE](https://www.te.com/usa-en/products/connectors/pcb-connectors/wire-to-board-connectors/ffc-fpc-ribbon-connectors/fpc-connectors.html?tab=pgp-story) - 84533 - [digikey](https://www.digikey.ee/short/54bfrwrh)
+* [TE](https://www.te.com/usa-en/products/connectors/pcb-connectors/wire-to-board-connectors/ffc-fpc-ribbon-connectors/fpc-connectors.html?tab=pgp-story) - 84534 - [digikey](https://www.digikey.ee/short/54bfrwrh)
 
 Suggested firmware that has to be written:
 https://qmk.fm/
