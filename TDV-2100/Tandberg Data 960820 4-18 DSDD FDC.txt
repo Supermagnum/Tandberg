@@ -1,0 +1,480 @@
+
+
+     Tandberg TDV-2124 Double-Density 8" Floppy Disk Drive Controller
+
+    *** Reference as of board 960820 4-18, with firmware 961186-16 ***
+
+
+
+        Table of contents:
+
+            -  2  Introduction
+            -  4  Interface
+            -  6  Parameters
+            -  9  Response
+            - 11  Commands
+            - 18  Jumpers
+
+
+
+
+
+
+                                                Frode van der Meeren, Nov.2023
+ 1
+
+
+    #   #  #  #####  ###    ##   ###   #  #   ###  #####   #    ##   #  #
+    #   ## #    #    #  #  #  #  #  #  #  #  #       #     #   #  #  ## #
+    #   # ##    #    ###   #  #  #  #  #  #  #       #     #   #  #  # ##
+    #   #  #    #    #  #   ##   ###    ##    ###    #     #    ##   #  #
+
+
+    Tandberg developed the TDV-2114 computer in 1976, based on an Intel 8080
+    addition to their upcoming line of TDV-2100 series terminals. While the
+    terminal-only device got the product number of TDV-2115, the terminal with
+    added CPU, memory and disk was somehow conunter-intuitively given the lower
+    product number. Later on, in 1980, Tandberg released the TDV-2124, which
+    was an incremental evolution of the TDV-2114.
+
+    The one feature that distinguish the TDV-2114 and the TDV-2124, is the disk
+    drive and controller. Whereas the TDV-2114 uses a single-sided drive and is
+    limited to single-density only, the TDV-2124 has a controller capable of
+    both double sided disks drives and the double-density format. All of this
+    while retaining at least somewhat software-compatible with the TDV-2114.
+
+
+
+ 2
+
+
+    It can be mentioned that the software-compatibility is due to the system-
+    monitor in ROM. This provides an abstraction-layer, so the disk controller
+    will look similar on both machines despite the different hardware. The
+    controllers themselves, on a hardware level, have very big differences.
+    Due to this, it is not possible to swap between the single-density and
+    double-density controller without also swapping the monitor-ROM of the CPU
+    card. XMON/D will only support the single-density controller, while XMON/F
+    will only support the double-density controller.
+
+    While these controllers are very different in operation, they also share
+    some common features. Both implements a custom proccessing core from all
+    discrete logic chips, and both uses a command-based strategy of operation.
+    Other data-transfers needed by the controller is handled through DMA, and
+    the controller does not need any caring to by the CPU after it has received
+    a new command.
+
+
+
+
+
+
+ 3
+
+    #   #  #  #####  ####  ###   ####   ##    ###  ####
+    #   ## #    #    #     #  #  #     #  #  #     #
+    #   # ##    #    ###   ###   ###   ####  #     ###
+    #   #  #    #    ####  #  #  #     #  #   ###  ####
+
+    Whereas the single-density controller keep separate IO ports for all the
+    different parameters received from the host, the majority of communication
+    to and from the double-density controller is done using a datastructure
+    stored in RAM as well as through IO port 0x30. For convenien the data-
+    structure will here be called the "Command Control Block".
+
+    Command Control Block               IO port 0x30
+    Address     Content                 Read              Write
+    ------------------------------      ---------------------------------------
+      -2        Return status           76543210          [00]   CCB at 0x2766
+      -1        Return data             ||                [H][L] Pointer to CCB
+       0        Drive parameter         |+-- 0: Halted
+       1        Command                 |    1: Running
+       2        Track parameter         |
+       3        Sector parameter        +--- 0: Controller busy
+       4        Data pointer LSB             1: Done, Ready for new command
+       5        Data pointer USB
+ 4
+
+
+    The default address of this CCB is at address 0x2766 (ie. 0x2764 - 0x276B,
+    inclusive). To invoke a command in a CCB located at this default address,
+    all you have to do is to check that the controller is ready to accept a new
+    operation, then output the byte 0x00 to IO port 0x30. Should the CCB be
+    located at any other address, a custom pointer to the CCB must be sent to
+    IO port 0x30 as a byte-pair, MSB first. It is worth noting that one should
+    wait at least around 5 microseconds between writing the two bytes, which
+    should equal a few instructions on the 8080.
+
+    When the command is complete, the IO port bit is set and the controller
+    will trigger an interrupt on channel 6.
+
+
+
+
+
+
+
+
+
+
+ 5
+
+
+    ###    ##   ###    ##   #   #  ####  #####  ####  ###    ###
+    #  #  #  #  #  #  #  #  #####  #       #    #     #  #  ##
+    ###   ####  ###   ####  # # #  ###     #    ###   ###     ##
+    #     #  #  #  #  #  #  #   #  ####    #    ####  #  #  ###
+
+
+    Before a command control block is sent to the controller card, any relevant
+    parameters in the CCB needs to be set. These parameters sets the domain of
+    the command to be executed. Any commands that reads and writes additional
+    data will need the data-pointer to be set to a source/destination somewhere
+    in RAM.
+
+
+
+    Sector parameter:       76543210
+                            ||||||||
+                            ++++++++- Sector number
+
+        Sector number is not limited by the firmware, but a read/write command
+        will expect to find the given sector in the target track of the disk.
+
+ 6
+
+
+    Drive parameter:        76543210
+                            ||||| ||
+                            ||||| ++- Drive number
+                            |||||
+                            ||||+---- 0: Head 0 (or Single sided)
+                            ||||      1: Head 1
+                            ||||
+                            |+++----- 000: 128 byte sectors
+                            |         001: 256 byte sectors **
+                            |         010: 512 byte sectors * **
+                            |         011: 1024 byte sectors * **
+                            |
+                            +-------- 0: Single density
+                                      1: Double density **
+
+                            Standard SSSD = 000000__
+                            Standard DSDD = 1001_0__
+
+        *  Track 0 Head 1 is locked to 128/256 byte sectors only
+        ** Track 0 Head 0 is locked to single density 128 byte per sector only
+
+ 7
+
+
+    Track parameter:        76543210
+                             |||||||
+                             +++++++- Target absolute track +
+
+
+                            76543210 ++
+                               |||||
+                               |++++- Number of steps
+                               |
+                               +----- 0: Step down
+                                      1: Step up
+
+        +  Absolute track is limited to 0-76
+        ++ Used only by the relative step command
+
+        Most commands use the absolute track parameter, and reduced write
+        current is hardcoded to start at track 44.
+
+
+
+
+ 8
+
+
+    ###   ####   ###  ###    ##   #  #   ###  ####
+    #  #  #     ##    #  #  #  #  ## #  ##    #
+    ###   ###     ##  ###   #  #  # ##    ##  ###
+    #  #  ####  ###   #      ##   #  #  ###   ####
+
+
+    When a command is complete, a status-byte and eventually an immediate value
+    will be returned in the command control block itself. Other data returned
+    from a command will be written to RAM starting at the CCB data pointer. The
+    meaning of the immediate value will depend on the command which has run.
+
+    The controller will also issue an interrupt on channel 6 when a command
+    completes. This can be used if immediate action after a disk operation is
+    needed.
+
+
+
+
+
+
+
+ 9
+    Status byte:    76543210
+                    ||||||||
+                    |||||+++- 000: End of file
+                    |||||     001: Deleted data record
+                    |||||     010: End of file
+                    |||||     011: CRC error
+                    |||||     100: No address mark
+                    |||||     101: Sector missing
+                    |||||     110: Timing error R/W xfer
+                    |||||     111: Timing error
+                    |||||
+                    ||+++---- 000: End of file
+                    ||        001: Non-valid controller command
+                    ||        010: Improper track number
+                    ||        011: Write protected volume
+                    ||        100: Drive not ready
+                    ||        101: Improper sector length
+                    ||        110: Improper volume format
+                    ||        111: Door opened
+                    ||
+                    ++------- 00: Command failed
+                              01: Command manually aborted
+                              10: Command successful
+ 10
+
+     ###   ##   #   #  #   #   ##   #  #  ###    ###
+    #     #  #  #####  #####  #  #  ## #  #  #  ##
+    #     #  #  # # #  # # #  ####  # ##  #  #    ##
+     ###   ##   #   #  #   #  #  #  #  #  ###   ###
+
+
+    The commands can be grouped into four main groups. These are as follows:
+    track-related commands, read commands, write commands and general commands.
+    To differentiate the various main groups, the command-byte is divided into
+    two main parts. One for the group, and one for the command itself.
+
+    Command byte:       76543210
+                        ||||||||
+                        ||||++++- Sub-command
+                        ||||
+                        ++++----- 0010: Track-related commands
+                                  0100: Read commands, door-check disabled
+                                  0101: Read commands, door-check enabled
+                                  1000: Write commands, door-check disabled
+                                  1001: Write commands, door-check enabled
+                                  1110: General commands
+                                  1111: Legacy general commands
+ 11
+    Track-related commands operates on an entire track at a time. As a result,
+    none of these will require the sector-related parameters.
+
+    Track-related sub-commands:     3210
+                                    ||||
+                                    ++++- 0011: Format track
+                                          1001: Seek relative
+                                          1100: Read entire track
+
+    Note that for Seek relative, the relative track parameter is used instead
+    of the absolute track parameter.
+
+    Reading the entire track will read all data-bytes on a track. This starts
+    at the index address mark, and ends where the index-hole comes around. As
+    such, a large enough data-buffer will need to be used for this. A typical
+    track consists of 5208 bytes for single density, and likewise over 10400
+    bytes for double density.
+
+    Formatting is done writing a template track in the data-buffer to disk in
+    one go. The whole template has to be prepared in RAM before the start of
+    the command. Most of the data in this template will be written as-is,
+    starting from the index-hole. There are, however, a few special bytes one
+    need to know about:
+ 12
+
+
+        Single-Density special bytes:           Double-Density special bytes:
+        -----------------------------           -----------------------------
+        F7  two-byte CRC                        F5  A1 pre-mark gap byte
+        F8  Deleted-Data Address mark           F6  C2 pre-index gap byte
+        FC  Index Address mark                  F7  two-byte CRC
+        FB  Data Address mark
+        FE  ID Address mark
+
+
+    These should be familiar for anyone who has used the Western Digital FD179x
+    series of floppy disk drive controllers for formatting before.
+
+
+    Also, when doing a format of a blank disk, it is important to start with
+    track 0 and work upwards one track at a time. The controller will use the
+    ID address marks of existing sectors to verify track numbers, so the track
+    immediately below the one to be formatted will as such need valid sectors.
+    Alternatively, the track-0 indicator overrides this sector check, which is
+    why this track needs to be the first track formatted if the disk is blank.
+
+
+ 13
+
+
+    The read-commands will read data on the disk. This can either be the next
+    address mark, if a user program needs to identify where on the disk the
+    head is located, or a sector itself. For the sector, all parameters in the
+    command control block needs to be used, and the data-buffer pointed to
+    needs to be big enough to contain the whole sector to be read.
+
+    Read sub-commands:      3210
+                            ||||
+                            ++++- 0001: Read address mark on current track
+                                  0010: Read sector, retries on error
+                                  0100: Read sector, status on error
+
+    To see if the sector read was marked as deleted, check the returned status.
+    Data in a deleted sector will otherwise be read normally, just as if the
+    secor was written with an ordinary data address mark.
+
+
+
+
+
+
+ 14
+
+
+    Like the read-commands, the write commands will use all three parameters in
+    the command control block. The data from the buffer will be written to the
+    target sector.
+
+    Write sub-commands:     3210
+                            ||||
+                            ++++- 0001: Data address mark
+                                  0010: Data address mark, verify CRC
+                                  0100: Deleted-Data address mark
+                                  1000: Deleted-Data address mark, verify CRC
+
+    If CRC verification is used, the written track will be read by the disk
+    controller in order to verify the CRC checksum. If it fails, the sector is
+    written again up to multiple times until the controller succeeds, or the
+    command times out.
+
+
+
+
+
+
+ 15
+
+
+    The general commands will be used for getting information about the system,
+    or otherwise do operations not strictly limited to within a few tracks. Any
+    return data is delivered through the immediate return value.
+
+    General sub-commands:   3210
+                            ||||
+                            ++++- 0001: Get disk data
+                                  0010: Get disk data, retry on error *
+                                  0100: Recalibrate (step to track-0)
+                                  1110: Get disk controller firmware version
+
+    Legacy sub-commands:    3210
+                            ||||
+                            ++++- 1110: Get disk controller firmware version
+
+        * To abort this, 0xA1 needs to be written to IO port 0x30
+
+
+
+
+
+ 16
+
+
+    Disk-data returned is mostly using a similar format as the drive parameter
+    byte. The only difference is that no drive number is provided, since this
+    should already be given by the user program when making the call.
+
+            Disk data:      76543210
+                            |||||
+                            ||||+---- 0: Single sided
+                            ||||      1: Double sided
+                            ||||
+                            |+++----- 000: 128 Bytes per sector
+                            |         001: 256 Bytes per sector
+                            |         010: 512 Bytes per sector
+                            |         011: 1024 Bytes per sector
+                            |
+                            +-------- 0: Single density FM
+                                      1: Double density MFM
+
+
+
+
+
+ 17
+
+       #  #  #  #   #  ###   ####  ###    ###
+       #  #  #  #####  #  #  #     #  #  ##
+    #  #  #  #  # # #  ###   ###   ###     ##
+     ##    ##   #   #  #     ####  #  #  ###
+
+    The card has several jumper settings that can be used to change various
+    hardware-settings. The most relevant would be to set the DMA channel or
+    IO port address, and it is as such fully possible to have two controllers
+    in the same computer.
+
+    Please note that not all jumpers are soldered in, and some are bridged with
+    traces on the PCB.. even if there is an actual jumper soldered on the board.
+
+
+    * Any jumper marked * is set by a PCB trace in addition to anything else.
+    * Settings marked with -> is default for the primary controller.
+
+    * Headers not shown here are for device-connection or debugging purposes.
+
+    * Pin 1 is either the top or the rightmost pin, when the card is held with
+      the card-edge connectors facing down.
+
+ 18
+    +-------------------------------------------------------------------------+
+    | O     _______________________________________________________________ O |
+    |                       J5E       J7E       J9E                           |
+    | |                                                                     | |
+    | |                                                                     | |
+    | | ------------------------------------------------------------------- | |
+    | |                                                                     | |
+    | |                                                                     | |
+    | | ___________________________________________________________________ | |
+    | |                    J5C                                              | |
+    | |                                                                     | |
+    | |     J2C                                                             | |
+    | | ------------------------------------------------------------------- | |
+    | |                                                                     | |
+    | |  J1B                                                                | |
+    | | ___________________________________________________________________ | |
+    | |   J1A                                       J10A                    | |
+    | |                                                         J13A        | |
+    | |                                                                     | |
+    | | ---------------------------------------------------------------     | |
+    |          J2        J4  J5        J7                                     |
+    \--+                          +-+       +---+                          +--/
+       \__________________________/ \_______/   \__________________________/
+ 19
+
+       J1A*   J1B*   IO port            J10A   J13A   Microcode
+       ---------------------            ---------------------------------
+   ->  1-2    2-3    0x30               2-3    1-2    Max 1K instructions
+       2-3    1-2    0x38               1-2    1-2    Max 2K instructions
+                                    ->  1-2    2-3    Max 4K instructions
+       J2*    J4     DMA channel
+       -------------------------        J5C           Microcode
+   ->  1-2    1-2    2                  -------------------------------
+       2-3    2-3    4                  Off           Disable branching
+                                    ->  On            Enable branching
+       J5     J7*    Interrupt
+       -----------------------          J5E*          Status bit4
+       2-3    1-2    5                  ---------------------------------
+   ->  1-2    2-3    6              ->  1-2           Pin-12 (Door check)
+                                        2-3           Pin-50
+       J2C*          Flux-rate
+       -----------------------          J7E*   J9E*  Status bit0   Sync-latch
+       1-2           250KHz             ---------------------------------------
+   ->  2-3           500KHz         ->  1-2    1-2   Pin-10 (2sd)  Pin-20 (Idx)
+                                        2-3    1-2   Pin-10 (2sd)  Pin-24
+                                        2-3    2-3   Pin-20 (Idx)  Pin-24
+
+ 20
