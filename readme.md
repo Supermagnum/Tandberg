@@ -6,6 +6,9 @@ A repository for Tandberg Data Keyboards technical information an ROM's.
 It was used for:
 https://en.wikipedia.org/wiki/TDV_2200
 
+Picture of a TDV 2200 keyboard:
+https://raw.githubusercontent.com/Supermagnum/Tandberg/refs/heads/main/a-tandberg-data-tdv2200-keyboard-picture-from-v0-ows3616kpe4a1-4209977600.jpg
+
 The keycaps looks like Devlin Z series.
 https://www.devlin.co.uk/products/components/keycaps.html
 
